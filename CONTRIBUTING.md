@@ -8,9 +8,9 @@ OpenMapTiles is an open source project and we love to receive contributions from
 
 # Ground Rules
 
- * Create issues for any major changes and enhancements that you wish to make. Discuss things transparently and get community feedback.
- * Keep feature versions as small as possible, preferably one new feature per version.
- * Be welcoming to newcomers and encourage diverse new contributors from all backgrounds. See the [Python Community Code of Conduct](https://www.python.org/psf/codeofconduct/).
+- Create issues for any major changes and enhancements that you wish to make. Discuss things transparently and get community feedback.
+- Keep feature versions as small as possible, preferably one new feature per version.
+- Be welcoming to newcomers and encourage diverse new contributors from all backgrounds. See the [Python Community Code of Conduct](https://www.python.org/psf/codeofconduct/).
 
 # Getting started
 
@@ -26,11 +26,11 @@ For any non-trivial changes, all pull requests must be approved by at least thre
 
 Your pull request must:
 
- * Address a single issue or add a single item of functionality.
- * Contain a clean history of small, incremental, logically separate commits,
-   with no merge commits.
- * Use clear commit messages.
- * Be possible to merge automatically.
+- Address a single issue or add a single item of functionality.
+- Contain a clean history of small, incremental, logically separate commits,
+  with no merge commits.
+- Use clear commit messages.
+- Be possible to merge automatically.
 
 When you modify import data rules in `mapping.yaml` or `*.sql`, please update:
 
@@ -44,7 +44,7 @@ When you are making PR that adds new spatial features to OpenMapTiles schema, pl
 
 # SQL unit testing
 
-It is recommended that you create a [unit test](TESTING.md) when modifying the behavior of the SQL layer.  This will ensure that your changes are working as expected when importing or updating OSM data into an OpenMapTiles database.
+It is recommended that you create a [unit test](TESTING.md) when modifying the behavior of the SQL layer. This will ensure that your changes are working as expected when importing or updating OSM data into an OpenMapTiles database.
 
 # Verifying that updates still work
 
@@ -74,14 +74,14 @@ export area=north-america/us/indiana
 rm -fr data build cache
 make destroy-db
 make download-geofabrik area=$area
-docker-compose run --rm --user=$(id -u):$(id -g) openmaptiles-tools sh -c "wget -nv -O data/$area.osm.pbf http://download.geofabrik.de/$area-$(date --date="$(date +%Y-%m-15) -1 month" +'%y%m01').osm.pbf"
+docker compose run --rm --user=$(id -u):$(id -g) openmaptiles-tools sh -c "wget -nv -O data/$area.osm.pbf http://download.geofabrik.de/$area-$(date --date="$(date +%Y-%m-15) -1 month" +'%y%m01').osm.pbf"
 ./quickstart.sh $area
 cat << EOM
 
 # Update with the changes since a month+ ago
 
 EOM
-docker-compose run --rm --user=$(id -u):$(id -g) openmaptiles-tools sh -c "osmupdate --base-url=$(sed -n 's/ *\"replication_url\": //p' data/$area.repl.json) data/$area.osm.pbf data/changes.osc.gz"
+docker compose run --rm --user=$(id -u):$(id -g) openmaptiles-tools sh -c "osmupdate --base-url=$(sed -n 's/ *\"replication_url\": //p' data/$area.repl.json) data/$area.osm.pbf data/changes.osc.gz"
 make import-diff
 make generate-tiles-pg
 ) < /dev/null

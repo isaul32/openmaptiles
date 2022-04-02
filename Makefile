@@ -12,7 +12,7 @@ include .env
 # Layers definition and meta data
 TILESET_FILE ?= openmaptiles.yaml
 
-# Options to run with docker and docker-compose - ensure the container is destroyed on exit
+# Options to run with docker and docker compose - ensure the container is destroyed on exit
 # Containers run as the current user rather than root (so that created files are not root-owned)
 DC_OPTS ?= --rm --user=$(shell id -u):$(shell id -g)
 
@@ -26,12 +26,12 @@ export PPORT
 TPORT ?= 8080
 export TPORT
 
-# Allow a custom docker-compose project name
+# Allow a custom docker compose project name
 ifeq ($(strip $(DC_PROJECT)),)
   DC_PROJECT := $(notdir $(shell pwd))
-  DOCKER_COMPOSE := docker-compose
+  DOCKER_COMPOSE := docker compose
 else
-  DOCKER_COMPOSE := docker-compose --project-name $(DC_PROJECT)
+  DOCKER_COMPOSE := docker compose --project-name $(DC_PROJECT)
 endif
 
 # Make some operations quieter (e.g. inside the test script)
@@ -568,9 +568,9 @@ else
 	@echo "Refreshing docker images... Use NO_REFRESH=1 to skip."
 ifneq ($(strip $(USE_PRELOADED_IMAGE)),)
 	POSTGIS_IMAGE=openmaptiles/postgis-preloaded \
-		docker-compose pull --ignore-pull-failures $(QUIET_FLAG) openmaptiles-tools generate-vectortiles postgres
+		docker compose pull --ignore-pull-failures $(QUIET_FLAG) openmaptiles-tools generate-vectortiles postgres
 else
-	docker-compose pull --ignore-pull-failures $(QUIET_FLAG) openmaptiles-tools generate-vectortiles postgres import-data
+	docker compose pull --ignore-pull-failures $(QUIET_FLAG) openmaptiles-tools generate-vectortiles postgres import-data
 endif
 endif
 
@@ -595,7 +595,7 @@ test-perf-null: init-dirs
 
 .PHONY: build-test-pbf
 build-test-pbf: init-dirs
-	docker-compose run $(DC_OPTS) openmaptiles-tools /tileset/.github/workflows/build-test-data.sh
+	docker compose run $(DC_OPTS) openmaptiles-tools /tileset/.github/workflows/build-test-data.sh
 
 .PHONY: debug
 debug:  ## Use this target when developing Makefile itself to verify loaded environment variables
